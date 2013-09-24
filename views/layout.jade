@@ -1,0 +1,16 @@
+!!!5
+html
+	head
+		title= title
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		script(src='/javascripts/jquery-2.0.3.min.js')
+	body
+		.header
+			h1 Site
+
+			form(action='search',method='get').search
+				input(type='text',placeholder='Search')
+		block pagehead
+			h1 Default Header
+		.content
+			block content

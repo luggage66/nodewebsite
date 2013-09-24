@@ -1,0 +1,12 @@
+extend layout
+
+include mixins.jade
+
+block pagehead
+	h1 Repos
+
+block content
+	ul
+		each repo in repos
+			li
+				a(href='/' + repo)= repo
