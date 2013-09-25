@@ -17,12 +17,7 @@ module.exports = (app) ->
 			next()
 
 	app.get '/settings', (req, res) ->
-		res.render 'settings', 
-			hitCount:
-				if req.session.hitCount
-					++req.session.hitCount
-				else
-					req.session.hitCount = 1
+		res.render 'settings',  {}
 
 	app.get '/:repo', (req, res) ->
 		viewModel = 
