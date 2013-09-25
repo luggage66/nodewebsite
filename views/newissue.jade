@@ -1,0 +1,9 @@
+extend layout
+
+
+block pagehead
+	h1 New Issue
+
+block content
+	form(action="/issue", method='post')
+		input(type='text', name='summary')

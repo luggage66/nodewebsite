@@ -1,8 +1,11 @@
 issues = require './issues'
 
 routes = 
-	'/issues': 
+	'/issue': 
 		get: issues.getIssues
+		post: issues.createIssue
+		'/new':
+			get: issues.createIssueForm
 		'/:id':
 			get: issues.getIssue
 
