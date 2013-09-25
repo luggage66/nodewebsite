@@ -1,13 +1,18 @@
 issues = require './issues'
 
 routes = 
-	'/issue': 
-		get: issues.getIssues
-		post: issues.createIssue
-		'/new':
-			get: issues.createIssueForm
-		'/:id':
-			get: issues.getIssue
+	'/':
+		get: (req, res) ->
+			res.redirect '/issue'
+		'issue': 
+			get: issues.getIssues
+			post: issues.createIssue
+			'/new':
+				get: issues.createIssueForm
+			'/:id':
+				get: issues.getIssue
+				'/comment':
+					post: issues.addComment
 
 
 module.exports = (app) ->

@@ -1,19 +1,9 @@
-mongoose = require 'mongoose'
-Schema = mongoose.Schema
+redis = require 'redis'
 
-issueSchema = new Schema
-	summary: String
-	description: String
-	
-	reportedBy: String
-	reportedDate:
-		type: Date
-		default: Date.now
+module.exports = () ->
+	client = redis.createClient()
 
-	components: [String]
+	client.on 'error', (err) ->
+		console.log 'Redis Error: ' + err
 
-	meta:
-		votes: Number
-
-Issue = mongoose.model 'Issue', issueSchema
-
+	client

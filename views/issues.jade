@@ -2,6 +2,9 @@ extend layout
 
 block pagehead
 	h1 Issues
+	a(href='/issue/new') Create Issue
 
 block content
-	p Issues...
+	ul
+		each issue in issues
+			li: a(href='/issue/' + issue)= 'Issue #' + issue

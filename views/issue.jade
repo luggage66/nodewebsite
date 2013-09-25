@@ -4,4 +4,14 @@ block pagehead
 	h1= 'Issue #' + id
 
 block content
-	p Issue...
+	h2 Summary
+	p= summary
+
+	h2 Comments
+	ul
+		each comment in comments
+			li= comment
+
+	form(action='/issue/' + id + '/comment', method='post')
+		textarea(name='body')
+		button(type='submit') Add Comment
