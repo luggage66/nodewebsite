@@ -1,6 +1,9 @@
 issues = require './issues'
+projects = require './projects'
 
-routes = 
+routes =
+	'project':
+		param: projects.lookupProject
 	'/':
 		get: (req, res) ->
 			res.redirect '/issue'
@@ -13,6 +16,8 @@ routes =
 				get: issues.getIssue
 				'/comment':
 					post: issues.addComment
+	'/:project':
+		get: projects.get
 
 
 module.exports = (app) ->

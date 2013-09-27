@@ -1,5 +1,4 @@
 Database = require '../lib/database'
-async = require 'async'
 
 db = Database()
 exports = module.exports

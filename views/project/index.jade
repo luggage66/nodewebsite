@@ -1,0 +1,10 @@
+extend ../layout
+
+block pagehead
+	h1= name
+
+block content
+	h2 Labels
+	ul
+		each label in labels
+			li= label
