@@ -3,7 +3,7 @@
 express = require 'express'
 http = require 'http'
 path = require 'path'
-require 'coffee-script'
+require 'iced-coffee-script'
 
 app = express()
 

@@ -11,6 +11,11 @@ block content
 		h2 Description
 		.description= issue.description
 
+	h2 Components
+	ul
+		each component in components
+			li= component
+
 	h2 Comments
 	ul
 		each comment in comments

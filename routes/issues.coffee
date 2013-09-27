@@ -5,57 +5,52 @@ db = Database()
 exports = module.exports
 
 exports.getIssues = (req, res) ->
-	db.smembers 'all.issues', (err, issues) ->
-		res.render 'issues', { issues: issues || [] }
+	await db.smembers 'all.issues', defer err, issues
+
+	res.render 'issues', { issues: issues || [] }
 
 exports.getIssue = (req, res) ->
 	id = req.params.id
 
-	async.series
-		issue: (cb) ->
-			db.hgetall 'issue:' + id, cb
-		comments: (cb) ->
-			db.sort 'issue:' + id + ':comments', 'GET', 'comment:*->body', cb
-		, (err, results) ->
-			res.render 'issue',
-				id: id
-				issue: results.issue
-				comments: results.comments
+	await db.hgetall "issue:#{id}", defer err, issue
+	await db.sort "issue:#{id}:comments", 'GET', 'comment:*->body', defer err, comments
+	await db.smembers "issue:#{id}:components", defer err, components
+
+	res.render 'issue',
+		id: id
+		issue: issue
+		comments: comments
+		components: components
 
 exports.createIssue = (req, res) ->
 	issueData =
 		summary: req.body.summary
 		description: req.body.description
 
-	db.incr 'next.issue.id', (err, id) ->
+	components = req.body.components
 
-		async.series [
-			(cb) ->
-				db.hmset 'issue:' + id, issueData, cb
-			(cb) ->
-				db.sadd 'all.issues', id, cb
-			], (err, results) ->
-				res.redirect '/issue/' + id
+	await db.incr 'next.issue.id', defer err, id
+	await db.hmset "issue:#{id}", issueData, defer err
+	await db.sadd "issue:#{id}:components", components, defer err
+	await db.sadd 'all.issues', id, defer err
+
+	res.redirect '/issue/' + id
 
 exports.createIssueForm = (req, res) ->
-	res.render 'newissue', {}
+	await db.smembers 'all.components', defer err, components
+	
+	res.render 'newissue',
+		components: components || []
 
 exports.addComment = (req, res) ->
 	id = req.params.id
-	body = req.body.body
 
-	db.incr 'next.comment.id', (err, commentId) ->
-		commentKey = 'comment:' + commentId
-		issueKey = 'issue:' + id
-		issueCommentSet = 'issue:' + id + ':comments'
+	commentData = 
+		issue: id
+		body: req.body.body
 
-		async.series [
-			(callback) ->
-				db.hmset commentKey,
-					issue: id
-					body: body
-					, callback
-			(callback) ->
-				db.sadd issueCommentSet, commentId, callback
-			], (err, results) ->
-				res.redirect '/issue/' + id
+	await db.incr 'next.comment.id', defer err, commentId
+	await db.hmset "comment:#{commentId}", commentData, defer err
+	await db.sadd "issue:#{id}:comments", commentId, defer err
+
+	res.redirect '/issue/' + id

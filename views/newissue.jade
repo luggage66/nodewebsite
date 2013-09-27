@@ -14,5 +14,9 @@ block content
 				input(type='text', name='summary')
 			+field('Description')
 				textarea(name='description')
+			+field('Components')
+				select(multiple, name='components')
+					each c in components
+						option(value=c)= c
 
 		button(type='submit') Create
