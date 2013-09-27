@@ -2,3 +2,15 @@ mixin tags(tags)
 	ul.tags
 	- each tag in tags
 		li= tag
+
+
+mixin fieldlist()
+	table
+		tbody
+			block
+
+mixin field(label)
+	tr
+		td.label= label
+		td
+			block

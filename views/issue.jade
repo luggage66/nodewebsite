@@ -5,7 +5,11 @@ block pagehead
 
 block content
 	h2 Summary
-	p= summary
+	p= issue.summary
+
+	if issue.description
+		h2 Description
+		.description= issue.description
 
 	h2 Comments
 	ul

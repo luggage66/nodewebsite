@@ -19,15 +19,19 @@ exports.getIssue = (req, res) ->
 		, (err, results) ->
 			res.render 'issue',
 				id: id
-				summary: results.issue.summary
+				issue: results.issue
 				comments: results.comments
 
 exports.createIssue = (req, res) ->
+	issueData =
+		summary: req.body.summary
+		description: req.body.description
+
 	db.incr 'next.issue.id', (err, id) ->
 
 		async.series [
 			(cb) ->
-				db.hset 'issue:' + id, 'summary', req.body.summary, cb
+				db.hmset 'issue:' + id, issueData, cb
 			(cb) ->
 				db.sadd 'all.issues', id, cb
 			], (err, results) ->

@@ -1,9 +1,18 @@
 extend layout
 
+include mixins
 
 block pagehead
-	h1 New Issue
+	h1
+		a(href='/issue') Issues/
+		span new
 
 block content
 	form(action="/issue", method='post')
-		input(type='text', name='summary')
+		+fieldlist
+			+field('Summary')
+				input(type='text', name='summary')
+			+field('Description')
+				textarea(name='description')
+
+		button(type='submit') Create
