@@ -8,8 +8,11 @@ block pagehead
 		span new
 
 block content
-	form(action="/issue", method='post')
+	form(action='/' + project.name + '/issues', method='post')
 		+fieldlist
+			+field('Project Id')
+				span= project._id
+				input(type='hidden', name='_project', value=project._id)
 			+field('Summary')
 				input(type='text', name='summary')
 			+field('Description')

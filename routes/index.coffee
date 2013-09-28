@@ -4,20 +4,26 @@ projects = require './projects'
 routes =
 	'project':
 		param: projects.lookupProject
-	'/':
+	'issue':
+		param: issues.lookupIssue
+	'/': #direct children, drop /
 		get: (req, res) ->
 			res.redirect '/issue'
-		'issue': 
-			get: issues.getIssues
+		'project':
+			post: projects.createProject
+			'/new':
+				get: projects.createProjectForm
+	'/:project':
+		get: projects.get
+		'/issues':
 			post: issues.createIssue
 			'/new':
 				get: issues.createIssueForm
-			'/:id':
+			'/:issue':
 				get: issues.getIssue
 				'/comment':
 					post: issues.addComment
-	'/:project':
-		get: projects.get
+
 
 
 module.exports = (app) ->

@@ -1,55 +1,50 @@
-Database = require '../lib/database'
+domain = require '../lib/domain'
 
-db = Database()
 exports = module.exports
 
+exports.lookupIssue = (req, res, next, issue) ->
+	await domain.Issue.findById issue, defer err, issueData
+
+	if issueData
+		req.issue = issueData
+		next()
+	else
+		next(new Error("issue '#{issue}' not found."))
+
 exports.getIssues = (req, res) ->
-	await db.smembers 'all.issues', defer err, issues
+	domain.Issue.find _project: req.project._id, defer err, issues
 
 	res.render 'issues', { issues: issues || [] }
 
 exports.getIssue = (req, res) ->
-	id = req.params.id
-
-	await db.hgetall "issue:#{id}", defer err, issue
-	await db.sort "issue:#{id}:comments", 'GET', 'comment:*->body', defer err, comments
-	await db.smembers "issue:#{id}:components", defer err, components
+	
+	await domain.Comment.find _issue: req.issue._id, defer err, comments
 
 	res.render 'issue',
-		id: id
-		issue: issue
-		comments: comments
-		components: components
+		issue: req.issue
+		comments: comments || []
 
-exports.createIssue = (req, res) ->
-	issueData =
+exports.createIssue = (req, res, next) ->
+
+	issue = new domain.Issue
+		_project: req.body._project
 		summary: req.body.summary
 		description: req.body.description
+		labels: req.body.labels
 
-	components = req.body.components
+	await issue.save defer err
 
-	await db.incr 'next.issue.id', defer err, id
-	await db.hmset "issue:#{id}", issueData, defer err
-	await db.sadd "issue:#{id}:components", components, defer err
-	await db.sadd 'all.issues', id, defer err
+	if err
+	  next(err)
 
-	res.redirect '/issue/' + id
+	res.redirect "/#{req.project.name}/issues/#{issue._id}"
 
 exports.createIssueForm = (req, res) ->
-	await db.smembers 'all.components', defer err, components
-	
 	res.render 'newissue',
-		components: components || []
+		components: ['one', 'two']
+		project: req.project
 
-exports.addComment = (req, res) ->
+exports.addComment = (req, res, next) ->
 	id = req.params.id
 
-	commentData = 
-		issue: id
-		body: req.body.body
-
-	await db.incr 'next.comment.id', defer err, commentId
-	await db.hmset "comment:#{commentId}", commentData, defer err
-	await db.sadd "issue:#{id}:comments", commentId, defer err
-
-	res.redirect '/issue/' + id
+	next(new Error 'not implemented')

@@ -4,7 +4,12 @@ block pagehead
 	h1= name
 
 block content
-	h2 Labels
+	P!= _id
+	p!= description
+
+	h2 Issues
+		a(href='/' + project.name + '/issues/new') Create
+
 	ul
-		each label in labels
-			li= label
+		each issue in issues
+			li: a(href='/' + project.name + '/issues/' + issue._id)=  issue.summary

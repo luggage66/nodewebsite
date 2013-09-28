@@ -1,7 +1,7 @@
 extend layout
 
 block pagehead
-	h1= 'Issue #' + id
+	h1= 'Issue #' + issue._id
 
 block content
 	h2 Summary
@@ -11,10 +11,10 @@ block content
 		h2 Description
 		.description= issue.description
 
-	h2 Components
+	h2 Labels
 	ul
-		each component in components
-			li= component
+		each label in issue.labels
+			li= label
 
 	h2 Comments
 	ul

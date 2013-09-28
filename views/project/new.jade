@@ -1,0 +1,16 @@
+extend ../layout
+
+include ../mixins
+
+block pagehead
+	h1 New Project
+
+block content
+	form(action="/project", method='post')
+		+fieldlist
+			+field('Name')
+				input(type='text', name='name')
+			+field('Description')
+				textarea(name='description')
+
+		button(type='submit') Create

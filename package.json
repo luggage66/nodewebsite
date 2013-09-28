@@ -10,7 +10,7 @@
     "jshtml": "*",
     "stylus": "*",
     "jade": "~0.35.0",
-    "redis": "~0.8.4",
-    "iced-coffee-script": "~1.6.3-g"
+    "iced-coffee-script": "~1.6.3-g",
+    "mongoose": "~3.6.20"
   }
 }

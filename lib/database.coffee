@@ -1,9 +1,9 @@
-redis = require 'redis'
+mongoose = require 'mongoose'
 
-module.exports = () ->
-	client = redis.createClient()
+mongoose.connect 'mongodb://localhost/test'
 
-	client.on 'error', (err) ->
-		console.log 'Redis Error: ' + err
+db = mongoose.connection
 
-	client
+db.on 'error', console.error.bind(console, 'connection error:')
+
+db.once 'open', () ->

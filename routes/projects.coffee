@@ -1,10 +1,13 @@
-Database = require '../lib/database'
+domain = require '../lib/domain'
 
-db = Database()
 exports = module.exports
 
 exports.lookupProject = (req, res, next, project) ->
-	await db.hgetall "project:#{project}", defer err, projectData
+	await domain.Project.findOne
+		name: project
+		, defer err, projectData
+
+	#await db.hgetall "project:#{project}", defer err, projectData
 
 	if projectData
 		req.project = projectData
@@ -15,8 +18,22 @@ exports.lookupProject = (req, res, next, project) ->
 exports.get = (req, res) ->
 	project = req.project
 
-	await db.smembers "project:#{project}:labels", defer err, labels
+	await domain.Issue.find _project: project._id, defer err, issues
 
-	project.labels = labels | []
+	res.render 'project/index',
+		project: project
+		issues: issues || []
 
-	res.render 'project/index', project
+exports.createProjectForm = (req, res) ->
+	res.render 'project/new'
+
+exports.createProject = (req, res, next) ->
+	project = new domain.Project
+		name: req.body.name
+		description: req.body.description
+
+	await project.save defer err
+	if err
+	  next(err)
+
+	res.redirect "/#{project.name}"
