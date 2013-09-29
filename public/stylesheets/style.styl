@@ -1,12 +1,17 @@
 background-color = rgb(39,40,34)
 
 body
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
-  background-color: background-color
-  color: rgb(200, 200, 200)
+  font: 14px 'Helvetica Neue', Helvetica, Arial, freesans, sans-serif;
+  background-color: white
+  color: black
   margin: 0
 a
   color: #00B7FF
+
+ h1, h2, h3, h4
+ 	font-family: 'Helvetica Neue', Helvetica, Arial, freesans, sans-serif;
+ 	font-weight: 500
+
 
 .header
 	background-color: #E44424
@@ -25,3 +30,18 @@ a
 body > .content
  	padding: 50px
  	border-top: solid 1px gray
+
+ul.tags
+	display: inline-block
+	list-style-type: none
+	overflow: auto
+	margin: 0
+	padding: 0
+	height: auto
+
+	li
+		float: left
+
+.issue
+	.description
+		margin 1em 0 1em 0

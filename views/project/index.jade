@@ -1,11 +1,11 @@
 extend ../layout
 
 block pagehead
-	h1= name
+	h1= project.name
 
 block content
-	P!= _id
-	p!= description
+	P!= project._id
+	p!= project.description
 
 	h2 Issues
 		a(href='/' + project.name + '/issues/new') Create

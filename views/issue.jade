@@ -1,26 +1,27 @@
 extend layout
 
 block pagehead
-	h1= 'Issue #' + issue._id
+	h1
+		a(href='/' + project.name)= project.name
+		span /issues/
+		a(href='/' + project.name + '/issues/' + issue._id)= issue._id
 
 block content
-	h2 Summary
-	p= issue.summary
+	.issue
+		h2= issue.summary
 
-	if issue.description
-		h2 Description
-		.description= issue.description
+		span Labels:
+		ul.tags
+			each label in issue.labels
+				li= label
 
-	h2 Labels
-	ul
-		each label in issue.labels
-			li= label
+		.description= issue.description			
 
-	h2 Comments
-	ul
-		each comment in comments
-			li= comment
+		h2 Comments
+		ul
+			each comment in comments
+				li= comment
 
-	form(action='/issue/' + id + '/comment', method='post')
-		textarea(name='body')
-		button(type='submit') Add Comment
+		form(action='/issue/' + id + '/comment', method='post')
+			textarea(name='body')
+			button(type='submit') Add Comment

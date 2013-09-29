@@ -22,6 +22,7 @@ exports.getIssue = (req, res) ->
 
 	res.render 'issue',
 		issue: req.issue
+		project: req.project
 		comments: comments || []
 
 exports.createIssue = (req, res, next) ->
