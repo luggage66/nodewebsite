@@ -37,3 +37,9 @@ exports.createProject = (req, res, next) ->
 	  next(err)
 
 	res.redirect "/#{project.name}"
+
+exports.list = (req, res) ->
+	await domain.Project.find defer err, projects
+
+	res.render 'index',
+		projects: projects

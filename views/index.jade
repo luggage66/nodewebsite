@@ -3,10 +3,10 @@ extend layout
 include mixins.jade
 
 block pagehead
-	h1 Repos
+	h1 Projects
 
 block content
 	ul
-		each repo in repos
+		each project in projects
 			li
-				a(href='/' + repo)= repo
+				a(href='/' + project.name)= project.name

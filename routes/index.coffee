@@ -6,13 +6,11 @@ routes =
 		param: projects.lookupProject
 	'issue':
 		param: issues.lookupIssue
-	'/': #direct children, drop /
-		get: (req, res) ->
-			res.redirect '/issue'
-		'project':
-			post: projects.createProject
-			'/new':
-				get: projects.createProjectForm
+	'/': get: projects.list
+	'/project':
+		post: projects.createProject
+		'/new':
+			get: projects.createProjectForm
 	'/:project':
 		get: projects.get
 		'/issues':
@@ -23,8 +21,6 @@ routes =
 				get: issues.getIssue
 				'/comment':
 					post: issues.addComment
-
-
 
 module.exports = (app) ->
 	map = (a, route) ->

@@ -4,6 +4,11 @@ block pagehead
 	h1= project.name
 
 block content
+	.side-bar
+		ul.filter-list
+			li All Issues
+				span.count 10
+
 	P!= project._id
 	p!= project.description
 
